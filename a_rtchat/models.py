@@ -14,7 +14,7 @@ class GroupMessage(models.Model):
     group = models.ForeignKey(
         ChatGroup, related_name="chat_messages", on_delete=models.CASCADE
     )
-    auther = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     body = models.CharField(max_length=255)
     created = models.DateTimeField(auto_now_add=True)
 
