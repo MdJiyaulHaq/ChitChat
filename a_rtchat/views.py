@@ -1,6 +1,9 @@
 from django.http import Http404
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+from django.http import HttpResponse
 from .models import *
 from .forms import ChatmessageCreateForm
 
@@ -35,6 +38,7 @@ def chat_view(request, chatroom_name="public_chat"):
         "form": form,
         "other_user": other_user,
         "chatroom_name": chatroom_name,
+        "chat_group": chat_group,
     }
     return render(request, "a_rtchat/chat.html", context)
 
@@ -60,3 +64,24 @@ def get_or_create_chatroom(request, username):
         chatroom.members.add(other_user, request.user)
 
     return redirect("chatroom", chatroom.group_name)
+
+
+def chat_file_upload(request, chatroom_name):
+    chat_group = get_object_or_404(ChatGroup, group_name=chatroom_name)
+    
+    if request.htmx and request.FILES:
+        file = request.FILES['file']
+        message = GroupMessage.objects.create(
+            file = file,
+            author = request.user, 
+            group = chat_group,
+        )
+        channel_layer = get_channel_layer()
+        event = {
+            'type': 'message_handler',
+            'message_id': message.id,
+        }
+        async_to_sync(channel_layer.group_send)(
+            chatroom_name, event
+        )
+    return HttpResponse()
