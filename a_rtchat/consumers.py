@@ -9,8 +9,17 @@ from a_rtchat.models import ChatGroup, GroupMessage
 class ChatroomConsumer(WebsocketConsumer):
     def connect(self):
         self.user = self.scope["user"]
+        if not self.user.is_authenticated:
+            self.close()
+            return
+
         self.chatroom_name = self.scope["url_route"]["kwargs"]["chatroom_name"]
         self.chatroom = get_object_or_404(ChatGroup, group_name=self.chatroom_name)
+
+        # Check if user has access to private chatroom
+        if self.chatroom.is_private and self.user not in self.chatroom.members.all():
+            self.close()
+            return
 
         async_to_sync(self.channel_layer.group_add)(
             self.chatroom_name, self.channel_name
