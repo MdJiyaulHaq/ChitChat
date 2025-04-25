@@ -14,7 +14,7 @@ from channels.security.websocket import AllowedHostsOriginValidator
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "a_core settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "a_core.settings")
 
 django_asgi_app = get_asgi_application()
 
