@@ -36,9 +36,9 @@ if ENVIRONMENT == "development":
 else:
     DEBUG = False
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "chitchat.railway.internal"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "chitchat-prod.up.railway.app"]
 
-CSRF_TRUSTED_ORIGINS = ["https://chitchat.railway.internal"]
+CSRF_TRUSTED_ORIGINS = ["https://chitchat-prod.up.railway.app"]
 
 
 # Application definition
