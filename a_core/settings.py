@@ -36,9 +36,9 @@ if ENVIRONMENT == "development":
 else:
     DEBUG = False
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "*"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "chitchat.railway.internal"]
 
-CSRF_TRUSTED_ORIGINS = ["https://*"]
+CSRF_TRUSTED_ORIGINS = ["https://chitchat.railway.internal"]
 
 
 # Application definition
@@ -105,21 +105,23 @@ TEMPLATES = [
 # WSGI_APPLICATION = "a_core.wsgi.application"
 
 ASGI_APPLICATION = "a_core.asgi.application"
+if ENVIRONMENT == "development":
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer",
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels.layers.InMemoryChannelLayer",
+        }
     }
-}
+else:
 
-# CHANNEL_LAYERS = {
-#     "default": {
-#         "BACKEND": "channels_redis.core.RedisChannelLayer",
-#         "CONFIG": {
-#             "hosts": [('redis://default:jqkOKYbQHBqZYMIRkKCRugeqTkxAtyCQ@redis.railway.internal:6379')],
-#         },
-#     },
-# }
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels_redis.core.RedisChannelLayer",
+            "CONFIG": {
+                "hosts": [env("REDIS_URL")],
+            },
+        },
+    }
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
