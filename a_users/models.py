@@ -19,6 +19,6 @@ class Profile(models.Model):
     
     @property
     def avatar(self):
-        if self.image:
+        if self.image and hasattr(self.image, 'url'):
             return self.image.url
         return f'{settings.STATIC_URL}images/avatar.svg'
