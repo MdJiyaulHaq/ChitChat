@@ -180,7 +180,7 @@ MEDIA_URL = "media/"
 if ENVIRONMENT == "development":
     MEDIA_ROOT = BASE_DIR / "media"
 else:
-    DEFAULT_FILE_STORAGE = "cloudinary_storage.storage. MediaCloudinaryStorage"
+    DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
     CLOUDINARY_STORAGE = {"CLOUDINARY_URL": env("CLOUDINARY_URL")}
 
 
