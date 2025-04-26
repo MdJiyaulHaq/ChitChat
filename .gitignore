@@ -11,7 +11,6 @@ __pycache__/
 *.egg-info/
 dist/
 build/
-*.egg-info/
 .eggs/
 
 # Django
@@ -20,6 +19,7 @@ build/
 *.pyc
 db.sqlite3
 media/
+static/
 staticfiles/
 local_settings.py
 
@@ -85,3 +85,20 @@ node_modules/
 
 # Ignore development requirements
 requirements_dev.txt
+# Static and media
+static/
+media/
+
+# SQLite temp files
+*.sqlite3-journal
+
+# Django migration files (optional during early development)
+**/migrations/*.pyc
+**/migrations/*.pyo
+**/migrations/*.pyd
+
+# SASS cache
+.sass-cache/
+
+# Local Python packages (PEP 582)
+__pypackages__/
