@@ -11,7 +11,7 @@ from .forms import ChatmessageCreateForm
 # Create your views here.
 @login_required
 def chat_view(request, chatroom_name="public_chat"):
-    chat_group = get_object_or_404(ChatGroup, group_name=chatroom_name)
+    chat_group, created = ChatGroup.objects.get_or_create(group_name=chatroom_name)
     chat_messages = chat_group.chat_messages.all()[:33]
 
     other_user = None
@@ -68,20 +68,18 @@ def get_or_create_chatroom(request, username):
 
 def chat_file_upload(request, chatroom_name):
     chat_group = get_object_or_404(ChatGroup, group_name=chatroom_name)
-    
+
     if request.htmx and request.FILES:
-        file = request.FILES['file']
+        file = request.FILES["file"]
         message = GroupMessage.objects.create(
-            file = file,
-            author = request.user, 
-            group = chat_group,
+            file=file,
+            author=request.user,
+            group=chat_group,
         )
         channel_layer = get_channel_layer()
         event = {
-            'type': 'message_handler',
-            'message_id': message.id,
+            "type": "message_handler",
+            "message_id": message.id,
         }
-        async_to_sync(channel_layer.group_send)(
-            chatroom_name, event
-        )
+        async_to_sync(channel_layer.group_send)(chatroom_name, event)
     return HttpResponse()
