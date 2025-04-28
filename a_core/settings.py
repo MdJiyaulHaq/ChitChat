@@ -39,6 +39,7 @@ ALLOWED_HOSTS = ["localhost", "127.0.0.1", "chitchat-prod.up.railway.app"]
 
 CSRF_TRUSTED_ORIGINS = ["https://chitchat-prod.up.railway.app"]
 
+INTERNAL_IPS = ["127.0.0.1", "localhost"]
 
 # Application definition
 
